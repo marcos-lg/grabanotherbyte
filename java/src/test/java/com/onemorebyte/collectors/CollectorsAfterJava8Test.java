@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,7 +23,6 @@ import static java.util.stream.Collectors.minBy;
 import static java.util.stream.Collectors.teeing;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static java.util.stream.Collectors.toUnmodifiableMap;
@@ -85,19 +83,6 @@ public class CollectorsAfterJava8Test {
             .collect(groupingBy(Email::getFrom, flatMapping(e -> e.getTo().stream(), toSet())));
     assertEquals(3, recipientsBySender.keySet().size());
     assertEquals(2, recipientsBySender.get("Maria").size());
-
-    recipientsBySender =
-        EMAILS.stream()
-            .collect(
-                toMap(
-                    Email::getFrom,
-                    v -> new HashSet<>(v.getTo()),
-                    (a, b) -> {
-                      a.addAll(b);
-                      return a;
-                    }));
-    assertEquals(3, recipientsBySender.keySet().size());
-    assertEquals(2, recipientsBySender.get("Maria").size());
   }
 
   @Test
@@ -115,13 +100,11 @@ public class CollectorsAfterJava8Test {
     assertEquals(3, ccEmailsBySender.keySet().size());
     assertEquals(1, ccEmailsBySender.get("Maria").size());
     assertEquals(0, ccEmailsBySender.get("Tim").size());
-    System.out.println(ccEmailsBySender);
 
     Map<String, List<Email>> ccEmailsBySenderWithoutFiltering =
         EMAILS.stream()
             .filter(e -> e.getCc() != null && !e.getCc().isEmpty())
             .collect(groupingBy(Email::getFrom));
-    System.out.println(ccEmailsBySenderWithoutFiltering);
     assertEquals(2, ccEmailsBySenderWithoutFiltering.keySet().size());
     assertEquals(1, ccEmailsBySenderWithoutFiltering.get("Maria").size());
     assertNull(ccEmailsBySenderWithoutFiltering.get("Tim"));
