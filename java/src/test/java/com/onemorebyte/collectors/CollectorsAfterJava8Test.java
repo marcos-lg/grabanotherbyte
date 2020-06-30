@@ -51,8 +51,8 @@ public class CollectorsAfterJava8Test {
             "Tim",
             Arrays.asList("Robert", "Joe"),
             Collections.emptyList(),
-            "Greetings",
-            "Greetings from Tim"));
+            "How are you?",
+            "Hello, how are you?"));
     EMAILS.add(
         new Email(
             "Maria",
@@ -65,8 +65,8 @@ public class CollectorsAfterJava8Test {
             "Maria",
             Collections.singletonList("Joe"),
             Collections.singletonList("Anna"),
-            "Hi",
-            "Hi Joe!"));
+            "Hello",
+            "Hello Joe!"));
   }
 
   @Test
@@ -149,26 +149,14 @@ public class CollectorsAfterJava8Test {
   public void toUnmodifiableMapTest() {
     // JAVA 10
     Map<String, Email> unmodifiableMap =
-        EMAILS.stream().collect(toUnmodifiableMap(Email::getFrom, v -> v));
-    assertEquals(3, unmodifiableMap.keySet().size());
+        EMAILS.stream().collect(toUnmodifiableMap(Email::getSubject, v -> v));
+    assertEquals(4, unmodifiableMap.keySet().size());
     assertThrows(UnsupportedOperationException.class, () -> unmodifiableMap.remove("yellow"));
   }
 
   @Test
   public void teeingTest() {
     // JAVA 12
-    int diff =
-        EMAILS.stream()
-            .map(e -> e.getBody().length())
-            .collect(
-                teeing(
-                    collectingAndThen(
-                        maxBy(Comparator.naturalOrder()), (Optional<Integer> v) -> v.orElse(0)),
-                    collectingAndThen(
-                        minBy(Comparator.naturalOrder()), (Optional<Integer> v) -> v.orElse(0)),
-                    (max, min) -> max - min));
-    assertEquals(12, diff);
-
     String person = "Joe";
     boolean moreSentEmailsThanReceived =
         EMAILS.stream()
@@ -188,6 +176,20 @@ public class CollectorsAfterJava8Test {
                     filtering(e -> e.getTo().contains(person2), counting()),
                     (from, to) -> from - to > 0));
     assertTrue(moreSentEmailsThanReceived);
+
+    // diff between the longest and shortest email body
+    int diff =
+        EMAILS.stream()
+            .map(e -> e.getBody().length())
+            .collect(
+                teeing(
+                    collectingAndThen(
+                        maxBy(Comparator.naturalOrder()), (Optional<Integer> v) -> v.orElse(0)),
+                    collectingAndThen(
+                        minBy(Comparator.naturalOrder()), (Optional<Integer> v) -> v.orElse(0)),
+                    (max, min) -> max - min));
+    assertEquals(10, diff);
+
   }
 
   private static class Email {
