@@ -1,4 +1,4 @@
-package com.grabanotherbyte.collectors;
+package com.grabanotherbyte.java.collectors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
