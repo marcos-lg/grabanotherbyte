@@ -11,12 +11,14 @@
   <modules>
     <module>java</module>
     <module>spring</module>
+    <module>jackson</module>
   </modules>
 
   <properties>
     <junit5.version>5.6.2</junit5.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+    <jackson.version>2.11.2</jackson.version>
   </properties>
 
   <dependencyManagement>
@@ -39,6 +41,17 @@
         <version>${spring-boot.version}</version>
       </dependency>
 
+      <!-- jackson -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
 
       <!-- test -->
       <dependency>
