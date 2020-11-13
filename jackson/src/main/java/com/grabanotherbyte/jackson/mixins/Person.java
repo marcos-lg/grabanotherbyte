@@ -1,4 +1,4 @@
-package com.grabanotherbyte.jackson;
+package com.grabanotherbyte.jackson.mixins;
 
 import java.io.IOException;
 import java.util.StringJoiner;
@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.grabanotherbyte.jackson.Person.PersonDeserializer;
-import com.grabanotherbyte.jackson.Person.PersonSerializer;
+import com.grabanotherbyte.jackson.mixins.Person.PersonDeserializer;
+import com.grabanotherbyte.jackson.mixins.Person.PersonSerializer;
 
 @JsonSerialize(using = PersonSerializer.class)
 @JsonDeserialize(using = PersonDeserializer.class)

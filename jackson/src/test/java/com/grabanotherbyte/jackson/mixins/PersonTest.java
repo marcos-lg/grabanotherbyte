@@ -1,4 +1,4 @@
-package com.grabanotherbyte.jackson;
+package com.grabanotherbyte.jackson.mixins;
 
 import org.junit.jupiter.api.Test;
 
